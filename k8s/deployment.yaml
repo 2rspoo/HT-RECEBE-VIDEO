@@ -37,15 +37,3 @@ spec:
               value: us-east-1
             - name: DYNAMODB_TABLE_NAME
               value: "Pedidos"
-            - name: MERCADOPAGO_API_URL
-              value: "https://api.mercadopago.com"
-            - name: MERCADOPAGO_USER_ID
-              value: "123456"
-            - name: MERCADOPAGO_ACCESS_TOKEN
-              value: "TEST-TOKEN"
-            - name: MERCADOPAGO_POS_ID
-              value: "POS01"
-            - name: MERCADOPAGO_EXTERNAL_POS_ID
-              value: "POS_EXT_01"
-            - name: MERCADOPAGO_STORE_ID
-              value: "STORE01"
