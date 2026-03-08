@@ -3,8 +3,12 @@ package com.example.order.infrastructure.adapters.dynamo;
 import com.example.order.application.ports.out.VideoRepositoryPort;
 import com.example.order.domain.entities.Video;
 import org.springframework.stereotype.Component;
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
+import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class DynamoRepositoryAdapter implements VideoRepositoryPort {
@@ -18,7 +22,7 @@ public class DynamoRepositoryAdapter implements VideoRepositoryPort {
     }
 
     @Override
-    public void save(Video video) {
+    public void save(@org.jetbrains.annotations.NotNull Video video) {
         Map<String, AttributeValue> item = new HashMap<>();
 
         // ADAPTAÇÃO DAS CHAVES:
