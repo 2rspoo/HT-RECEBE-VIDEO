@@ -1,0 +1,51 @@
+name: Validação de Build e Qualidade
+
+on:
+  pull_request:
+    branches: [ "main", "master" ]
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [ "main", "master" ]
+
+jobs:
+  build-and-quality:
+    name: Build, Testes e SonarCloud
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Obrigatório12 para o Sonar analisar o histórico do Git
+
+      - name: Configurar JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      # PASSO 1: Build + Testes + Verificação de 70% (JaCoCo)
+      # Se a cobertura for < 70%, o comando 'verify' vai falhar1 aqui e nem roda o Sonar.
+      - name: Build and Verify Coverage
+        run: mvn -B clean verify
+
+      # PASSO 2: Envio para o SonarCloud
+      # Só roda se o passo anterior passou (testes ok e cobertura > 70%)
+      - name: SonarCloud Scan
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Variável padrão do GitHub
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}    # O segredo que você criou
+        run: |
+          mvn -B sonar:sonar \
+            -Dsonar.projectKey=2rspoo_gestao-pedidos  \
+            -Dsonar.organization=2rspoo \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.coverage.jacoco.xmlReportPaths=**/target/site/jacoco/jacoco.xml
