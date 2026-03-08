@@ -1,0 +1,18 @@
+// domain/entities/Video.java
+public record Video(
+        String id,
+        String userId,
+        String fileName,
+        String status,
+        LocalDateTime createdAt
+) {
+    public static Video createNew(String userId, String fileName) {
+        return new Video(
+                UUID.randomUUID().toString(),
+                userId,
+                fileName,
+                "UPLOADED",
+                LocalDateTime.now()
+        );
+    }
+}}
