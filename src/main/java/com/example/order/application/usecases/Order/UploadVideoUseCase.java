@@ -1,3 +1,11 @@
+package com.example.order.application.usecases.Order;
+
+import com.example.order.application.ports.out.VideoQueuePort;
+import com.example.order.application.ports.out.VideoRepositoryPort;
+import com.example.order.application.ports.out.VideoStoragePort;
+import com.example.order.domain.entities.Video;
+import org.springframework.stereotype.Service;
+
 // application/usecases/UploadVideoUseCase.java
 @Service // Aqui podemos usar Service para o Spring gerenciar
 public class UploadVideoUseCase {

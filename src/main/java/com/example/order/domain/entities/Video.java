@@ -1,3 +1,8 @@
+package com.example.order.domain.entities;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 // domain/entities/Video.java
 public record Video(
         String id,
