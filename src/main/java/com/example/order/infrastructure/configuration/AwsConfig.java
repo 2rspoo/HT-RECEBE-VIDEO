@@ -12,13 +12,13 @@ import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 @Configuration
 public class AwsConfig {
 
-    @Value("${spring.cloud.aws.region.static}")
+    @Value("${AWS_REGION}")
     private String region;
 
-    @Value("${spring.cloud.aws.credentials.access-key}")
+    @Value("${AWS_ACCESS_KEY_ID}")
     private String accessKey;
 
-    @Value("${spring.cloud.aws.credentials.secret-key}")
+    @Value("${AWS_SECRET_ACCESS_KEY}")
     private String secretKey;
 
     // Bean para o S3 (Armazenamento dos vídeos)

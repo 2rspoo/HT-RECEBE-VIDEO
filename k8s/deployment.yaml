@@ -33,7 +33,5 @@ spec:
                 secretKeyRef:
                   name: aws-credentials
                   key: secret-key
-            - name: SPRING_CLOUD_AWS_REGION_STATIC  # ADICIONE ESTA LINHA
-              value: us-east-1
             - name: AWS_REGION
               value: us-east-1
