@@ -53,6 +53,7 @@ jobs:
       - name: Configurar kubectl para o EKS
         run: aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name eks-spoo-ent9-backend
 
+
       - name: Atualizar imagem no Kubernetes
         run: |
           # Usando o nome correto da sua secret aqui também
