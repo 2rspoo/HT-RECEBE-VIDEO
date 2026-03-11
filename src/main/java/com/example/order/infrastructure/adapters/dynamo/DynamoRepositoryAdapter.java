@@ -27,7 +27,7 @@ public class DynamoRepositoryAdapter implements VideoRepositoryPort {
 
         // ADAPTAÇÃO DAS CHAVES:
         // Verifique se na sua tabela 'Pedidos' as chaves se chamam PK/SK ou Id/Status
-        item.put("Id", AttributeValue.builder().s(video.id()).build());
+        item.put("PedidoID", AttributeValue.builder().s(video.id()).build());
         item.put("UserId", AttributeValue.builder().s(video.userId()).build());
         item.put("Status", AttributeValue.builder().s(video.status()).build());
         item.put("FileName", AttributeValue.builder().s(video.fileName()).build());
