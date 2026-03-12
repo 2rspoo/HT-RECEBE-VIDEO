@@ -22,7 +22,7 @@ public class S3StorageAdapter implements VideoStoragePort {
     public void upload(String videoId, byte[] data) {
         PutObjectRequest request = PutObjectRequest.builder()
                 .bucket(bucketName)
-                .key("uploads/" + videoId)
+                    .key("uploads/" + videoId)
                 .build();
         s3Client.putObject(request, RequestBody.fromBytes(data));
     }
