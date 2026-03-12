@@ -16,7 +16,7 @@ public class SqsVideoResultListener {
     }
 
     // Escuta a fila de respostas.
-    @SqsListener("${aws.sqs.results-queue-url}")
+    @SqsListener("${AWS_SQS_RESULT_URL}")
     public void onResultMessage(VideoMetadata event) {
         System.out.println("<<< Recebido resultado do processamento para o ID: " + event.pedidoId());
 
