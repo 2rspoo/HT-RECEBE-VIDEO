@@ -1,4 +1,4 @@
-apiVersion: [monitoring.coreos.com/v1](https://monitoring.coreos.com/v1)
+apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
   name: video-app-pod-monitor
