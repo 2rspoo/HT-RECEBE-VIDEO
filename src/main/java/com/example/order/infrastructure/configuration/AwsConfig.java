@@ -40,4 +40,24 @@ public class AwsConfig {
                         AwsBasicCredentials.create(accessKey, secretKey)))
                 .build();
     }
+
+    @Bean
+    public SqsMessageListenerContainerFactory<Object> defaultSqsListenerContainerFactory(
+            SqsAsyncClient sqsAsyncClient,
+            ObjectMapper objectMapper) {
+
+        MappingJackson2MessageConverter jacksonConverter = new MappingJackson2MessageConverter();
+        jacksonConverter.setObjectMapper(objectMapper);
+
+        // [BLINDAGEM]: Ignora qualquer cabeçalho de tipo vindo da fila
+        jacksonConverter.setTypeIdPropertyName(null);
+
+        SqsMessagingMessageConverter sqsConverter = new SqsMessagingMessageConverter();
+        sqsConverter.setPayloadMessageConverter(jacksonConverter);
+
+        return SqsMessageListenerContainerFactory.builder()
+                .sqsAsyncClient(sqsAsyncClient)
+                .configure(options -> options.messageConverter(sqsConverter))
+                .build();
+    }
 }
