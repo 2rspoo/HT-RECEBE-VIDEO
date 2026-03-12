@@ -16,15 +16,15 @@ public class SqsVideoResultListener {
     }
 
     // Escuta a fila de respostas.
-    @SqsListener("${AWS_SQS_RESULT_URL}")
+    @SqsListener("${aws.sqs.results-queue-url}")
     public void onResultMessage(VideoMetadata event) {
         System.out.println("<<< Recebido resultado do processamento para o ID: " + event.pedidoId());
 
-        // Chama o UseCase para atualizar o DynamoDB
+        // Chama o UseCase passando APENAS STRINGS (Textos)
         atualizarStatusUseCase.execute(
                 event.pedidoId(),
                 event.status(),
-                event.s3Url().getBytes() // Que agora contém o caminho do arquivo processado
+                event.s3Url()
         );
     }
 }
