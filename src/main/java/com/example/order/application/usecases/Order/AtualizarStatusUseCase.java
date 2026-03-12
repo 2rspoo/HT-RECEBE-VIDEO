@@ -3,7 +3,9 @@ package com.example.order.application.usecases.Order;
 import com.example.order.application.ports.out.VideoRepositoryPort;
 import com.example.order.domain.entities.Video;
 import com.example.order.domain.entities.VideoMetadata;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AtualizarStatusUseCase {
     private final VideoRepositoryPort repository;
 
