@@ -38,7 +38,7 @@ public class VideoDownloadController {
         VideoMetadata video = (VideoMetadata) videoOptional.get();
 
         // 2. Se o status for COMPLETED, gera a URL do ZIP!
-        if ("COMPLETED".equalsIgnoreCase(video.status())) {
+        if ("DONE".equalsIgnoreCase(video.status())) {
 
             // Passa o ID para o adapter. Ele mesmo vai concatenar o "processed/" e ".zip"
             String linkDownload = s3StorageAdapter.gerarUrlDownload(video.pedidoId());
