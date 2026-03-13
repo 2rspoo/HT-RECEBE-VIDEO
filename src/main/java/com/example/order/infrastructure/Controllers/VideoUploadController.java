@@ -26,6 +26,7 @@ public class VideoUploadController {
     }
 
     @PostMapping("/upload")
+    @CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
     public ResponseEntity<String> upload(@RequestParam("file") MultipartFile file, @RequestHeader("X-User-Id") String userId) throws IOException, IOException {
         String videoId = uploadUseCase.execute(userId, file.getOriginalFilename(), file.getBytes());
         return ResponseEntity.ok(videoId);
@@ -33,6 +34,7 @@ public class VideoUploadController {
 
 
     // NOVO ENDPOINT: Lista os vídeos pelo CPF do usuário
+    @CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
     @GetMapping("/usuario/{userId}")
     public ResponseEntity<List<VideoMetadata>> listarPorUsuario(@PathVariable String userId) {
         List<VideoMetadata> videos = listarVideosUseCase.execute(userId);

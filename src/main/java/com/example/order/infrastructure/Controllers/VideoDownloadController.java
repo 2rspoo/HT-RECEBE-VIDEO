@@ -4,10 +4,7 @@ import com.example.order.application.ports.out.VideoRepositoryPort;
 import com.example.order.domain.entities.VideoMetadata;
 import com.example.order.infrastructure.adapters.s3.S3StorageAdapter;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.Optional;
@@ -18,13 +15,12 @@ public class VideoDownloadController {
 
     private final VideoRepositoryPort videoRepositoryPort;
     private final S3StorageAdapter s3StorageAdapter;
-
     // Injetando o RepositoryPort direto no Controller para buscar o status
     public VideoDownloadController(VideoRepositoryPort videoRepositoryPort, S3StorageAdapter s3StorageAdapter) {
         this.videoRepositoryPort = videoRepositoryPort;
         this.s3StorageAdapter = s3StorageAdapter;
     }
-
+    @CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
     @GetMapping("/{id}/status")
     public ResponseEntity<?> consultarStatusEDownload(@PathVariable String id) {
 
