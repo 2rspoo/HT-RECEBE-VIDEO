@@ -6,4 +6,4 @@ public record Customer(
         String email,
         String cpf,
         String senha
-)
+) {}
