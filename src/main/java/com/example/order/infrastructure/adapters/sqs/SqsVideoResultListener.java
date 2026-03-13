@@ -28,7 +28,7 @@ public class SqsVideoResultListener {
     @SqsListener("${AWS_SQS_RESULT_URL}")
     public void onResultMessage(VideoMetadata event) {
         System.out.println("<<< Recebido resultado do processamento para o ID: " + event.pedidoId());
-
+        System.out.println("<<< STATUS: " + event.status());
         // 1. Atualiza o banco de dados local (DynamoDB)
         atualizarStatusUseCase.execute(
                 event.pedidoId(),
@@ -43,6 +43,7 @@ public class SqsVideoResultListener {
     }
 
     private void enviarNotificacaoErro(VideoMetadata event) {
+        System.out.println("Envia Email");
         // Vai disparar a requisição HTTP pelo RestTemplate no CustomerApiClientAdapter
         getCustomerByCpfUseCase.execute(event.userId()).ifPresent(customer -> {
             String subject = "Erro no Processamento do seu Vídeo";
