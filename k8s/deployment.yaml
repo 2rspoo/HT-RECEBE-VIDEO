@@ -47,3 +47,6 @@ spec:
               value: "https://sqs.us-east-1.amazonaws.com/579375260812/fila-resulta-video"
             - name: AWS_DYNAMODB_TABLE  # <-- Adicione esta linha
               value: "Pedidos"
+            - name: API_CLIENTES_URL
+              value: "http://ad85a6271730c4da3919e7cecf142ccc-82003316.us-east-1.elb.amazonaws.com"
+
