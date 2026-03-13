@@ -89,5 +89,36 @@ public class DynamoRepositoryAdapter implements VideoRepositoryPort {
         dynamoDbClient.putItem(request);
     }
 
+    @Override
+    public java.util.List<VideoMetadata> findByUserId(String userId) {
+        software.amazon.awssdk.services.dynamodb.model.ScanRequest scanRequest = software.amazon.awssdk.services.dynamodb.model.ScanRequest.builder()
+                .tableName(TABLE_NAME)
+                .filterExpression("UserId = :userId")
+                .expressionAttributeValues(Map.of(":userId", AttributeValue.builder().s(userId).build()))
+                .build();
+
+        software.amazon.awssdk.services.dynamodb.model.ScanResponse response = dynamoDbClient.scan(scanRequest);
+
+        java.util.List<VideoMetadata> videos = new java.util.ArrayList<>();
+
+        for (Map<String, AttributeValue> item : response.items()) {
+            videos.add(new VideoMetadata(
+                    item.get("PedidoID").s(),
+                    item.get("UserId").s(),
+                    item.get("FileName").s(),
+                    item.get("Status").s(),
+                    item.containsKey("S3Url") ? item.get("S3Url").s() : null,
+                    java.time.LocalDateTime.parse(item.get("CreatedAt").s())
+            ));
+        }
+
+        // Opcional: Ordenar pela data de criação (mais recentes primeiro)
+        videos.sort((v1, v2) -> v2.createdAt().compareTo(v1.createdAt()));
+
+        return videos;
+    }
+
+
+
 
 }
