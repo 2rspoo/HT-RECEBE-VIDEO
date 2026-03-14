@@ -42,7 +42,7 @@ jobs:
       - name: SonarCloud Scan
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Variável padrão do GitHub
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}    # O segredo que você criou
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}    # O segredo que você criou.
         run: |
           mvn -B sonar:sonar \
             -Dsonar.projectKey=2rspoo/HT-RECEBE-VIDEO \
