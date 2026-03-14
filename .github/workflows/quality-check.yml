@@ -37,7 +37,7 @@ jobs:
       - name: Build and Verify Coverage
         run: mvn -B clean verify
 
-      # PASSO 2: Envio para o SonarCloud1
+      # PASSO 2: Envio para o SonarCloud12
       - name: SonarCloud Scan
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
