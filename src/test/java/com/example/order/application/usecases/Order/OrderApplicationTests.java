@@ -1,4 +1,4 @@
-package com.example.order;
+package com.example.order.application.usecases.Order;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
