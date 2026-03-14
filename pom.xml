@@ -26,6 +26,12 @@
 		<cucumber.version>7.15.0</cucumber.version>
 	</properties>
 
+	<properties>
+		<sonar.organization>2rspoo</sonar.organization>
+		<sonar.projectKey>2rspoo_HT-RECEBE-VIDEO</sonar.projectKey>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+	</properties>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
