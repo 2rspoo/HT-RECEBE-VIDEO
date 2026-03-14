@@ -12,9 +12,9 @@
 	</parent>
 
 	<groupId>com.example</groupId>
-	<artifactId>RECEBE-VIDEO</artifactId>
+	<artifactId>api-video</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>RECEBE-VIDEO</name>
+	<name>api-video</name>
 	<description>Processamento de Imagens - Clean Architecture</description>
 
 	<properties>
