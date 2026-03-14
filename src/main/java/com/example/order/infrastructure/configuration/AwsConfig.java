@@ -1,0 +1,73 @@
+package com.example.order.infrastructure.configuration;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.awspring.cloud.sqs.operations.SqsTemplate;
+import io.awspring.cloud.sqs.support.converter.SqsMessagingMessageConverter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.web.client.RestTemplate;
+import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+import software.amazon.awssdk.services.ses.SesClient;
+import software.amazon.awssdk.services.sqs.SqsAsyncClient;
+
+@Configuration
+public class AwsConfig {
+
+    @Value("${AWS_REGION}")
+    private String region;
+
+    @Value("${AWS_ACCESS_KEY_ID}")
+    private String accessKey;
+
+    @Value("${AWS_SECRET_ACCESS_KEY}")
+    private String secretKey;
+
+    // Bean para o S3 (Armazenamento dos vídeos)
+    @Bean
+    public S3Client s3Client() {
+        return S3Client.builder()
+                .region(Region.of(region))
+                .credentialsProvider(StaticCredentialsProvider.create(
+                        AwsBasicCredentials.create(accessKey, secretKey)))
+                .build();
+    }
+
+    // Bean para o DynamoDB (Onde está sua tabela "Pedidos")
+    @Bean
+    public DynamoDbClient dynamoDbClient() {
+        return DynamoDbClient.builder()
+                .region(Region.of(region))
+                .credentialsProvider(StaticCredentialsProvider.create(
+                        AwsBasicCredentials.create(accessKey, secretKey)))
+                .build();
+    }
+    // Se a sua região for diferente, ajuste aqui (ex: Region.US_EAST_1)
+    @Bean
+    public S3Presigner s3Presigner() {
+        return S3Presigner.builder()
+                .region(Region.of(region))
+                .credentialsProvider(DefaultCredentialsProvider.create())
+                .build();
+    }
+    @Bean
+    public SesClient sesClient() {
+        return SesClient.builder()
+                .region(Region.of(region)) // Use a mesma região do seu SES
+                .credentialsProvider(DefaultCredentialsProvider.create())
+                .build();
+    }
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+
+
+}

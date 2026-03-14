@@ -32,20 +32,19 @@ jobs:
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
 
-      # PASSO 1: Build + Testes + Verificação de 70% (JaCoCo)
-      # Se a cobertura for < 70%, o comando 'verify' vai falhar1 aqui e nem roda o Sonar.
+      # PASSO 1: Build + Testes + Verificação de 70% (JaCoCo) 21
+      # Se a cobertura for < 70%, o comando 'verify' vai falhar aqui e nem roda o Sonar.
       - name: Build and Verify Coverage
         run: mvn -B clean verify
 
-      # PASSO 2: Envio para o SonarCloud
-      # Só roda se o passo anterior passou (testes ok e cobertura > 70%)
+      # PASSO 2: Envio para o SonarCloud1
       - name: SonarCloud Scan
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Variável padrão do GitHub
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}    # O segredo que você criou
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           mvn -B sonar:sonar \
-            -Dsonar.projectKey=2rspoo_gestao-pedidos  \
+            -Dsonar.projectKey=2rspoo_HT-RECEBE-VIDEO \
             -Dsonar.organization=2rspoo \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.coverage.jacoco.xmlReportPaths=**/target/site/jacoco/jacoco.xml

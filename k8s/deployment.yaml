@@ -9,6 +9,10 @@ spec:
       app: minha-app-pedidos
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/actuator/prometheus"
+        prometheus.io/port: "8080"
       labels:
         app: minha-app-pedidos
     spec:
@@ -35,5 +39,14 @@ spec:
                   key: secret-key
             - name: AWS_REGION
               value: us-east-1
-            - name: DYNAMODB_TABLE_NAME
+            - name: AWS_S3_BUCKET  # <-- Esta é a nova variável
+              value: "ht-recebe-video"
+            - name: AWS_SQS_URL  # <-- Nova variável para a fila
+              value: "https://sqs.us-east-1.amazonaws.com/579375260812/fila-processamento-videos"
+            - name: AWS_SQS_RESULT_URL  # <-- Nova variável para a fila
+              value: "https://sqs.us-east-1.amazonaws.com/579375260812/fila-resulta-video"
+            - name: AWS_DYNAMODB_TABLE  # <-- Adicione esta linha
               value: "Pedidos"
+            - name: API_CLIENTES_URL
+              value: "http://ad85a6271730c4da3919e7cecf142ccc-82003316.us-east-1.elb.amazonaws.com"
+

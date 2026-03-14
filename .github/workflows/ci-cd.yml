@@ -51,7 +51,8 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Configurar kubectl para o EKS
-        run: aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name eks-sistemapedidos-eks
+        run: aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name eks-spoo-ent9-backend
+
 
       - name: Atualizar imagem no Kubernetes
         run: |
