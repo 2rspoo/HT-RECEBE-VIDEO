@@ -35,6 +35,7 @@ public class AwsSesEmailAdapter implements EmailPort {
             System.out.println(">>> E-mail de erro enviado com sucesso para: " + to);
         } catch (Exception e) {
             System.err.println("Falha ao enviar e-mail: " + e.getMessage());
+
         }
     }
 }
