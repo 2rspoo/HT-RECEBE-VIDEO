@@ -1,112 +1,130 @@
-Grupo 96
+Grupo 82
 
-Contribuições:
-Camila Rabello Spoo Goshima - Discord: camilaspoo - 11 973091025
-
+Contribuições: Camila Rabello Spoo Goshima - Discord: camilaspoo - 11 973091025 | 
 Rodrigo Rabello Spoo - Discord: srsinistro9459 - 11 981046096
 
-Vídeo:
-https://www.youtube.com/watch?v=YQabQ-ai_8I
 
-Repositório:
-https://github.com/2rspoo/gestao-pedidos
+🎬 Recebe Vídeo (Order API)
 
-## 🍔 API de Gestão de Pedidos 
-Este projeto é um microsserviço para gestão de pedidos de uma lanchonete, desenvolvido seguindo os princípios da **Arquitetura Hexagonal (Ports and Adapters)**. O sistema gerencia o ciclo de vida do pedido, desde a recepção, pagamento (integração com Mercado Pago), preparação até a finalização.
+Este projeto é um microsserviço responsável por ser a porta de entrada dos vídeos enviados pelos usuários. Ele recebe o arquivo, armazena no AWS S3, registra o estado inicial no DynamoDB e publica um evento na fila SQS para processamento assíncrono. Além disso, ele escuta a fila de resultados para atualizar o banco de dados, gerar links de download seguros (Pre-signed URLs) e notificar o usuário via AWS SES em caso de erro.
 
-![Java](https://img.shields.io/badge/Java-21-orange)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4.1-green)
-![Coverage](https://img.shields.io/badge/Coverage-Jacoco-success)
-![Build](https://img.shields.io/badge/Build-Maven-blue)
+O projeto segue estritamente os princípios da Arquitetura Hexagonal (Ports and Adapters) para garantir manutenibilidade e total desacoplamento da infraestrutura em nuvem.
 
-## 🏛️ Arquitetura
+🏛️ Arquitetura
 
-O projeto foi estruturado para garantir o desacoplamento entre a regra de negócio e as tecnologias externas:
+A aplicação foi desenhada para isolar o domínio das implementações externas:
 
-* **Domain:** Entidades e regras de negócio centrais (`Order`, etc).
-* **Application (Use Cases):** Implementação dos casos de uso (`CreateOrder`, `AdvanceStatus`, `GetAllOrders`, etc).
-* **Ports (In/Out):** Interfaces que definem a entrada e saída do core da aplicação.
-* **Infrastructure (Adapters):** Implementações reais das portas (DynamoDB Repository, Mercado Pago Service, Rest Controllers).
+Domain: Entidades centrais (VideoMetadata, Customer) e imutabilidade (uso de records).
 
-## 🛠️ Tecnologias Utilizadas
+Application (Use Cases): Casos de uso como UploadVideoUseCase, ListarVideosUseCase, AtualizarStatusUseCase.
 
-* **Linguagem:** Java 21
-* **Framework:** Spring Boot 3.4.1
-* **Banco de Dados:** Amazon DynamoDB
-* **Pagamentos:** Integração via QR Code com API do Mercado Pago
-* **Testes:** JUnit 5, Mockito
-* **Qualidade de Código:** JaCoCo (Cobertura), SonarQube
-* **Containerização:** Docker (Opcional para ambiente local)
+Ports (In/Out): Contratos que definem a comunicação com S3 (VideoStoragePort), SQS (VideoQueuePort), DynamoDB (VideoRepositoryPort) e SES (EmailPort).
 
-## 🚀 Como Rodar o Projeto
+Infrastructure (Adapters): Implementações reais usando AWS SDK v2, adaptadores HTTP (RestTemplate) e Controladores REST.
 
-### Pré-requisitos
-* Java 21 SDK instalado
-* Maven instalado
-* Docker (para rodar o SonarQube localmente, se desejar)
+🛠️ Tecnologias Utilizadas
 
-### Configuração de Ambiente
-Crie um arquivo `application-prod.properties` ou configure as variáveis de ambiente necessárias para a integração com o Mercado Pago e DynamoDB:
+Linguagem: Java 21
 
-## DynamoDB (Local ou AWS)
-aws.access.key=SEU_ACCESS_KEY
-aws.secret.key=SEU_SECRET_KEY
+Framework: Spring Boot 3.4.1
+
+Cloud/AWS: S3 (Armazenamento), SQS (Mensageria), DynamoDB (NoSQL), SES (E-mail)
+
+Documentação: SpringDoc OpenAPI (Swagger)
+
+Qualidade: JaCoCo (Cobertura de testes), SonarQube
+
+Containerização: Docker & Kubernetes
+
+🚀 Como Rodar o Projeto
+
+Pré-requisitos
+
+Java 21 SDK
+
+Maven
+
+Docker (opcional)
+
+Credenciais da AWS configuradas (~/.aws/credentials)
+
+Configuração de Ambiente
+Configure as variáveis necessárias no arquivo application.properties ou via variáveis de ambiente do Kubernetes:
+
 aws.region=us-east-1
+aws.s3.bucket=seu-bucket-aqui
+aws.sqs.url=url-da-fila-de-envio
+aws.sqs.results-queue-url=url-da-fila-de-respostas
+aws.ses.sender=seu-email-verificado@dominio.com
+api.clientes.url=http://url-do-loadbalancer-de-clientes
 
-## Mercado Pago
-mercadopago.api.url=[https://api.mercadopago.com](https://api.mercadopago.com)
-mercadopago.access.token=SEU_ACCESS_TOKEN
-mercadopago.user.id=SEU_USER_ID
-mercadopago.pos.id=SEU_POS_ID
-mercadopago.webhook.url=SEU_WEBHOOK_URL
+
 Executando a Aplicação
-Bash
-mvn spring-boot:run -Dspring-boot.run.profiles=prod
 
-## 🧪 Testes e Qualidade
-O projeto possui uma suíte de testes unitários robusta cobrindo Use Cases, Domain, Adapters e Controllers.
+mvn spring-boot:run
+
+
+🧪 Testes e Qualidade =)
+
+O projeto conta com testes unitários para validar regras de domínio, use cases e adaptadores.
+
 Rodar Testes
-Bash
+
 mvn clean test
-Relatório de Cobertura (JaCoCo)
-Após rodar os testes, o relatório HTML estará disponível em:
-target/site/jacoco/index.html
-http://localhost:63342/gestao-pedidos/cardapio/target/site/jacoco/index.html?_ijt=og6voocemr71mb4umrtner7065&_ij_reload=RELOAD_ON_SAVE
-<img width="1315" height="320" alt="image" src="https://github.com/user-attachments/assets/75847dd7-53ac-45fb-b6ab-98a1abacd503" />
 
 
-### Análise de Código (SonarQube)
-Para enviar as métricas para o SonarQube (certifique-se de ter um servidor Sonar rodando):
-Bash
-mvn clean verify sonar:sonar -Dsonar.token=SEU_TOKEN
-<img width="1125" height="193" alt="image" src="https://github.com/user-attachments/assets/95fe07d0-8185-4a0f-849f-03936c152654" />
+Relatório de Cobertura (JaCoCo): Após a execução dos testes, o relatório de cobertura pode ser visualizado em: target/site/jacoco/index.html
 
-### 📋 Fluxo do Pedido (Status)
-O sistema segue uma máquina de estados estrita para garantir a consistência:
-1.	RECEBIDO: Pedido criado, aguardando pagamento.
-2.	PREPARO: Pagamento confirmado via Webhook, enviado para cozinha.
-3.	PRONTO: Preparo finalizado, aguardando retirada.
-4.	FINALIZADO: Pedido entregue ao cliente.
-5.	CANCELADO: Caso o pagamento seja recusado ou cancelado manualmente.
-   
-Nota: A listagem de pedidos (GetAllOrders) prioriza pedidos PRONTOS > PREPARO > RECEBIDO e filtra os finalizados/cancelados.
+🥒 BDD (Behavior Driven Development)
 
-##🔌 API Endpoints (Resumo)
-Método	Endpoint	Descrição
-POST	/orders	Cria um novo pedido e gera QR Code
-GET	/orders	Lista fila de pedidos (Ordenada por prioridade)
-GET	/orders/{id}	Busca detalhes de um pedido
-PATCH	/orders/{id}/advance	Avança o status do pedido
-POST	/webhook/payment	Recebe notificação de pagamento do Mercado Pago
-______________________________________________________________________________
+Além dos testes unitários, a aplicação utiliza Cucumber para testes de comportamento, garantindo que as funcionalidades atendam aos requisitos de negócio descritos em linguagem natural (Gherkin).
 
-## Acesso ao Frontend da Aplicação:
+Estrutura dos Testes:
 
-Abra o arquivo index.html, webhook ou stress.html diretamente no seu navegador. As interfaces carregarão os dados da API.
+Features (.feature): Localizados em src/test/resources/features. Descrevem os cenários (ex: Receber Vídeo, Atualizar Status).
+
+Step Definitions: Localizados em src/test/java/.../bdd.
+
+Como Rodar os Testes BDD:
+
+mvn clean test
 
 
+Relatório do Cucumber gerado em: target/cucumber-reports/cucumber.html
+
+Análise de Código (SonarQube):
+
+mvn clean verify sonar:sonar -Dsonar.token=SEU_TOKEN 
 
 
+🔌 API Endpoints (Resumo)
 
+Método
 
+Endpoint
 
+Descrição
+
+POST
+
+/v1/videos/upload
+
+Recebe o vídeo (Multipart) e envia para a fila. (Requer Header X-User-Id)
+
+GET
+
+/v1/videos/usuario/{userId}
+
+Lista todos os vídeos e status de um cliente específico.
+
+GET
+
+/api/videos/{id}/status
+
+Retorna o status atual do vídeo e o link de download (.zip) temporário se concluído.
+
+Acesso ao Frontend da Aplicação:
+Abra o arquivo index.html diretamente no seu navegador. A interface unificada gerenciará o login, uploads e listagem conectando-se aos LoadBalancers automaticamente.
+
+Acesso a Documentação da API (Swagger UI):
+A documentação completa (Swagger) pode ser acessada em: http://localhost:8080/swagger-ui.html
